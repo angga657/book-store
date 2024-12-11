@@ -13,13 +13,18 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
+        $faker = \Faker\Factory::create();
+        $categories = [];
+
         for ($i = 0; $i < 3000; $i++) {
-            \DB::table('categories')->insert([
+            $categories[] = [
                 'name' => $faker->word,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]);
+            ];
         }
+
+        // Insert semua data sekaligus
+        \DB::table('categories')->insert($categories);
     }
 }

@@ -5,23 +5,39 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use App\Models\Rating; // Use the Rating model if it exists
+use App\Models\Book; 
 
 class RatingSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run() 
     {
+        ini_set('memory_limit', '2G');
         $faker = Faker::create();
-        $books = \DB::table('books')->pluck('id');
+
+        // Bulk insert for ratings
+        $books = Book::pluck('id')->toArray();
+
+        $ratings = [];
         for ($i = 0; $i < 500000; $i++) {
-            \DB::table('ratings')->insert([
-                'book_id' => $faker->randomElement($books),
-                'rating' => $faker->numberBetween(1, 5),
+            $ratings[] = [
+                'book_id' => $books[array_rand($books)],
+                'rating' => $faker->numberBetween(1, 10),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]);
+            ];
+
+            // insert in chunk to manage memory
+            if (count($ratings) >= 1000) {
+                Rating::insert($ratings);
+                $ratings = [];
+            }
+        }
+        if (!empty($ratings)) {
+            Rating::insert($ratings);
         }
     }
 }

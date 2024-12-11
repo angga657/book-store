@@ -13,17 +13,30 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        $authors = \DB::table('authors')->pluck('id');
-        $categories = \DB::table('categories')->pluck('id');
+        $faker = \Faker\Factory::create();
+        $authors = \DB::table('authors')->pluck('id')->toArray(); // Ambil semua ID Author
+        $categories = \DB::table('categories')->pluck('id')->toArray(); // Ambil semua ID Category
+        $books = [];
+
         for ($i = 0; $i < 100000; $i++) {
-            \DB::table('books')->insert([
+            $books[] = [
                 'title' => $faker->sentence(3),
                 'author_id' => $faker->randomElement($authors),
                 'category_id' => $faker->randomElement($categories),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]);
+            ];
+
+            // Bulk insert dalam batch untuk menghindari kehabisan memori
+            if ($i % 10000 === 0 && $i > 0) {
+                \DB::table('books')->insert($books);
+                $books = [];
+            }
+        }
+
+        // Insert sisa data
+        if (!empty($books)) {
+            \DB::table('books')->insert($books);
         }
     }
 }
