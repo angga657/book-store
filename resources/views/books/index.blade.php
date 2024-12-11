@@ -9,14 +9,14 @@
 </head>
 <body class="container">
     <form method="GET" action="{{ route('books.index') }}">
-        <label for="limit" class="col-sm-2 col-form-label mt-2">List shown : </label>
+        <label for="limit" class="col-sm-1 col-form-label mt-2">List shown : </label>
         <select name="limit" class="col-sm-2 col-form-label">
             @for ($i = 10; $i <= 100; $i += 10)
                 <option value="{{ $i }}" {{ request('limit') == $i ? 'selected' : '' }}>{{ $i }}</option>
             @endfor
         </select>
         <br>
-        <label for="limit" class="col-sm-2 col-form-label mt-2">Search : </label>
+        <label for="limit" class="col-sm-1 col-form-label mt-2">Search <span style="margin-left: 28px;">:</span> </label>
         <input type="text" name="search" class="col-sm-2 col-form-label" value="{{ request('search') }}">
         <br>
         <button type="submit" class="btn-primary mt-2 col-md-2">Submit</button>
@@ -34,16 +34,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($books as $index => $book)
+            @forelse($books as $index => $book)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $books->firstItem() + $index }}</td>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->category->name }}</td>
                     <td>{{ $book->author->name }}</td>
                     <td>{{ number_format($book->average_rating, 2) }}</td>
                     <td>{{ $book->voters }}</td>
                 </tr>
-            @endforeach
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center">No books found.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </body>

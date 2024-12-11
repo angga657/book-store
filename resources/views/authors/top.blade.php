@@ -10,7 +10,7 @@
 <body class="container">
     <h1 class="text-center">Top 10 Most Famous Authors</h1>
 
-<table class="table table-bordered mt-4">
+<table class="table table-bordered mt-4 w-50 mx-auto">
     <thead>
         <tr>
             <th>No</th>
