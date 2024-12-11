@@ -5,7 +5,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
-use App\Models\Rating; // Use the Rating model if it exists
+use App\Models\Rating; 
 use App\Models\Book; 
 
 class RatingSeeder extends Seeder
