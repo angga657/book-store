@@ -9,10 +9,20 @@ use App\Models\Rating;
 
 class RatingController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
-        $authors = Author::with('books')->get();
-        return view('ratings.create', compact('authors'));
+        // Data semua penulis diurutkan secara descending berdasarkan nama
+        $authors = Author::orderBy('name', 'asc')->get(); 
+        $books = collect(); // Awalnya koleksi kosong
+
+        if ($request->has('author_id')) {
+            // Filter buku berdasarkan penulis yang dipilih
+            $books = Book::where('author_id', $request->author_id)
+                ->orderBy('title', 'asc') // Pastikan orderBy digunakan sebelum get
+                ->get();
+        }
+
+        return view('ratings.create', compact('authors', 'books'));
     }
 
     public function store(Request $request)
