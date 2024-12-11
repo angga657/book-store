@@ -4,72 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Ratings</title>
 </head>
 <body class="container">
 
     <h1 class="text-center">Insert Rating</h1>
 
-    <form method="POST" action="{{ route('rate.store') }}" class="position-relative mt-5">
-        @csrf
-        <label class="col-sm-2 col-form-label mt-5">Book Author:</label>
-        <select id="author" class="dropdown col-sm-2" name="author_id" >
+    <form method="GET" action="{{ route('rate.create') }}" class="mt-5">
+        <!-- Dropdown Author -->
+        <label class="form-label mt-3">Book Author:</label>
+        <select name="author_id" class="form-select" onchange="this.form.submit()" style="width: 20%">
             <option value="">Select an author</option>
             @foreach($authors as $author)
-                <option value="{{ $author->id }}">{{ $author->name }}</option>
+                <option value="{{ $author->id }}" {{ request('author_id') == $author->id ? 'selected' : '' }}>
+                    {{ $author->name }}
+                </option>
             @endforeach
         </select>
-    
-        <br>
-    
-        <label class="col-sm-2 col-form-label">Book Title:</label>
-        <select id="book" class="dropdown col-sm-2" name="book_id">
+    </form>
+
+    @if(request('author_id'))
+    <form method="POST" action="{{ route('rate.store') }}" class="mt-3">
+        @csrf
+        <input type="hidden" name="author_id" value="{{ request('author_id') }}">
+
+        <!-- Dropdown Book -->
+        <label class="form-label mt-3">Book Title:</label>
+        <select name="book_id" class="form-select" style="width: 20%">
             <option value="">Select a book</option>
-            <!-- Options will be populated dynamically based on selected author -->
+            @foreach($books as $book)
+                <option value="{{ $book->id }}">{{ $book->title }}</option>
+            @endforeach
         </select>
-        <br>
-    
-        <label class="col-sm-2 col-form-label">Rating:</label>
-        <select name="rating" class="col-sm-2">
+
+        <!-- Rating -->
+        <label class="form-label mt-3">Rating:</label>
+        <select name="rating" class="form-select" style="width: 20%">
             @for ($i = 1; $i <= 10; $i++)
-            <option value="{{ $i }}">{{ $i }}</option>
+                <option value="{{ $i }}">{{ $i }}</option>
             @endfor
         </select>
-        <br>
-    
-        <button type="submit" class="btn-primary mt-2 col-md-2">Submit</button>
+
+        <button type="submit" class="btn btn-primary mt-4">Submit</button>
     </form>
-    
-    <!-- jQuery for simplicity -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#author').on('change', function() {
-                var authorID = $(this).val();
-    
-                if (authorID) {
-                    $.ajax({
-                        url: '/getBooks/' + authorID,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            $('#book').empty();
-                            $('#book').append('<option value="">Select a book</option>');
-                            $.each(data, function(key, value) {
-                                $('#book').append('<option value="' + value.id + '">' + value.title + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#book').empty();
-                    $('#book').append('<option value="">Select a book</option>');
-                }
-            });
-        });
-    </script>
+    @endif
+
 </body>
 </html>
-
-
