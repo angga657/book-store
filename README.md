@@ -36,7 +36,7 @@ DB_PASSWORD=your_password
 
 php artisan migrate
 
-3. (Optional) Run the seeders to populate initial data:
+3. Run the seeders to populate initial data:
 
 php artisan db:seed
 
