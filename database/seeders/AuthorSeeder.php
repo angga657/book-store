@@ -14,14 +14,19 @@ class AuthorSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create(); 
+        $faker = \Faker\Factory::create();
+        $authors = [];
+
         for ($i = 0; $i < 1000; $i++) {
-            \DB::table('authors')->insert([
+            $authors[] = [
                 'name' => $faker->name,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]);
+            ];
         }
+
+        // Bulk insert semua data sekaligus
+        \DB::table('authors')->insert($authors);
     }
     
 }
