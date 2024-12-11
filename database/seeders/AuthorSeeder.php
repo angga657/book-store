@@ -14,7 +14,7 @@ class AuthorSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Faker::create();
         $authors = [];
 
         for ($i = 0; $i < 1000; $i++) {

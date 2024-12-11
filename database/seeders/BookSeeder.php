@@ -13,7 +13,7 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Faker::create();
         $authors = \DB::table('authors')->pluck('id')->toArray(); // Ambil semua ID Author
         $categories = \DB::table('categories')->pluck('id')->toArray(); // Ambil semua ID Category
         $books = [];
