@@ -21,14 +21,13 @@ class BookController extends Controller
             }])
             ->when($search, function ($query, $search) {
                 $query->where('title', 'like', '%' . $search . '%')
-                      ->orWhereHas('author', function ($q) use ($search) {
-                          $q->where('name', 'like', '%' . $search . '%');
-                      });
+                    ->orWhereHas('author', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
             })
             ->orderBy('average_rating', 'desc')
-            ->limit($limit)
-            ->get();
-            
+            ->paginate($limit); // Menggunakan paginate
+
         return view('books.index', compact('books', 'limit'));
     }
 }
