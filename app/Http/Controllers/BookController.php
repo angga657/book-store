@@ -23,9 +23,6 @@ class BookController extends Controller
                 $query->where('title', 'like', '%' . $search . '%')
                       ->orWhereHas('author', function ($q) use ($search) {
                           $q->where('name', 'like', '%' . $search . '%');
-                      })
-                      ->orWhereHas('category', function ($q) use ($search) {
-                          $q->where('name', 'like', '%' . $search . '%');
                       });
             })
             ->orderBy('average_rating', 'desc')
@@ -35,3 +32,4 @@ class BookController extends Controller
         return view('books.index', compact('books', 'limit'));
     }
 }
+
