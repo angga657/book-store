@@ -19,7 +19,7 @@
         <label for="limit" class="col-sm-1 col-form-label mt-2">Search <span style="margin-left: 28px;">:</span> </label>
         <input type="text" name="search" class="col-sm-2 col-form-label" value="{{ request('search') }}">
         <br>
-        <button type="submit" class="btn-primary mt-2 col-md-2">Submit</button>
+        <button type="submit" class="btn-primary mt-2 col-md-2" style="margin-left: 113px">Submit</button>
     </form>
     
     <table class="table table-bordered mt-2">
