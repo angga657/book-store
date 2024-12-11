@@ -12,13 +12,13 @@ class AuthorController extends Controller
     {
         $authors = Author::withCount(['books as voters' => function ($query) {
             $query->join('ratings', 'books.id', '=', 'ratings.book_id')
-                  ->select(\DB::raw('count(ratings.id)')) // count the number of ratings (voters)
-                  ->groupBy('books.author_id');
+                  ->where('ratings.rating', '>', 5) // Only consider ratings greater than 5
+                  ->select(\DB::raw('count(distinct ratings.id)')); // Count unique ratings
         }])
-        ->orderBy('voters', 'desc') // Now ordering by 'voters' instead of 'voters_count'
+        ->orderBy('voters', 'desc') // Order by calculated voters
         ->limit(10)
         ->get();
-    
+
         return view('authors.top', compact('authors'));
     }
 }
