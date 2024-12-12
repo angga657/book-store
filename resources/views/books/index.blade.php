@@ -50,6 +50,9 @@
             @endforelse
         </tbody>
     </table>
+    <div class="mt-4">
+        {{ $books->links() }}
+    </div>
 </body>
 </html>
 
