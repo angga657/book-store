@@ -28,7 +28,7 @@ class BookController extends Controller
             })
             ->orderBy('average_rating', 'desc')
             ->paginate($limit)
-            ->appends($request->all());; // Menggunakan paginate
+            ->appends($request->all()); 
 
         return view('books.index', compact('books', 'limit'));
     }
