@@ -11,6 +11,7 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $limit = $request->input('limit', 10);
+        $limit = in_array($limit, range(10, 100, 10)) ? $limit : 10;
         $search = $request->input('search', null);
 
         $books = Book::with('author', 'category')
@@ -26,7 +27,8 @@ class BookController extends Controller
                     });
             })
             ->orderBy('average_rating', 'desc')
-            ->paginate($limit); // Menggunakan paginate
+            ->paginate($limit)
+            ->appends($request->all());; // Menggunakan paginate
 
         return view('books.index', compact('books', 'limit'));
     }
