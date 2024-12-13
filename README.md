@@ -46,7 +46,7 @@ php artisan serve
 
 5. Access the application in your browser:
 
-- http://127.0.0.1:8000/books (Access the List of books with filter)
+- http://127.0.0.1:8000/ (Access the List of books with filter)
 
 - http://127.0.0.1:8000/top-authors (Access the List of top 10 most famous author)
 

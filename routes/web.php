@@ -19,7 +19,7 @@ use App\Http\Controllers\RatingController;
 
 
 
-Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('/', [BookController::class, 'index'])->name('books.index');
 Route::get('/top-authors', [AuthorController::class, 'top'])->name('authors.top');
 Route::get('/rate', [RatingController::class, 'create'])->name('rate.create');
 Route::post('/rate', [RatingController::class, 'store'])->name('rate.store');
